@@ -13,6 +13,10 @@ with open('rf_model.pkl', 'rb') as file:
 with open('scaler.pkl', 'rb') as file:
     scaler = pickle.load(file)
 
+@app.route('/')
+def home():
+    return 'Welcome to the Flask App!'
+
 @app.route('/predict', methods=['POST'])
 def predict():
     data = request.json
@@ -57,10 +61,10 @@ def retrain():
     new_model.fit(X_scaled, y)
 
     # Serialize the retrained model and scaler
-    with open('models/rf_model.pkl', 'wb') as file:
+    with open('rf_model.pkl', 'wb') as file:
         pickle.dump(new_model, file)
 
-    with open('models/scaler.pkl', 'wb') as file:
+    with open('scaler.pkl', 'wb') as file:
         pickle.dump(scaler, file)
 
     return jsonify({'message': 'Model retrained successfully'})
